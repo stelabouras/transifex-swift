@@ -117,4 +117,23 @@
     [TXNative dispose];
 }
 
+- (void)testBuilder {
+    MockLocaleProvider *mockLocaleProvider = [MockLocaleProvider.alloc initWithMockLocaleCode:@"el"];
+    TXLocaleState *locales = [TXLocaleState.alloc initWithSourceLocale:@"en"
+                                                            appLocales:@[ @"el" ]
+                                                 currentLocaleProvider:mockLocaleProvider];
+
+    XCTAssertFalse([TXNativeBuilder new].build);
+
+    XCTAssertFalse([[TXNativeBuilder new]
+                    setToken:@"token"].build);
+
+    XCTAssertFalse([[TXNativeBuilder new]
+                    setLocales:locales].build);
+
+    XCTAssertTrue([[[TXNativeBuilder new]
+                    setLocales:locales]
+                    setToken:@"token"].build);
+}
+
 @end

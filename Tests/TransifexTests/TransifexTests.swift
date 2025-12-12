@@ -1163,6 +1163,24 @@ final class TransifexTests: XCTestCase {
         XCTAssertEqual(argsReflection[2] as! String, argsRegex[2] as! String)
     }
 
+    func testBuilder() {
+        let locales = TXLocaleState(sourceLocale: "en",
+                                    appLocales: ["en"])
+
+        XCTAssertFalse(TXNativeBuilder()
+            .setLocales(locales)
+            .build())
+
+        XCTAssertFalse(TXNativeBuilder()
+            .setToken("token")
+            .build())
+
+        XCTAssertTrue(TXNativeBuilder()
+            .setLocales(locales)
+            .setToken("token")
+            .build())
+    }
+
     static var allTests = [
         ("testDuplicateLocaleFiltering", testDuplicateLocaleFiltering),
         ("testCurrentLocaleProvider", testCurrentLocaleProvider),
